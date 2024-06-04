@@ -20,7 +20,7 @@ def main():
 
     # Set up the serial connection
     ser = serial.Serial(
-        port='/dev/ttyUSB0', # Change this to the correct port for your system
+        port='/dev/ttyACM0', # Change this to the correct port for your system
         baudrate=19200,
         bytesize=serial.EIGHTBITS,
         parity=serial.PARITY_NONE,
