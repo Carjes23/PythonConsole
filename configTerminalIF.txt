@@ -1,0 +1,1 @@
+{"permanent_command_1": "", "permanent_command_2": "", "permanent_command_3": "", "permanent_command_4": "", "permanent_command_5": "", "x_column": 2, "y_columns": [0, 1]}

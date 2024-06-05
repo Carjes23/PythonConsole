@@ -1,0 +1,15 @@
+port_selector = None
+baudrate_entry = None
+connect_button = None
+command_entry = None
+data_display = None
+graph_button = None
+graph_window = None
+x_column_entry = None
+y_columns_entry = None
+x_coords = []
+y_coords = []
+lines = []
+ax = None
+fig = None
+canvas = None
