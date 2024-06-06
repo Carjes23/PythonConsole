@@ -1,3 +1,14 @@
+"""
+ui_setup.py
+
+This module sets up the user interface for the Microcontroller Interface application.
+It includes the main UI components and their configuration, including serial port
+selection, command entry, data display, and plot configuration.
+
+Functions:
+    - setup_ui: Initializes and configures the UI components.
+"""
+
 import tkinter as tk
 from tkinter import scrolledtext, ttk
 from ui_handlers import (
@@ -13,10 +24,20 @@ from serial_handler import find_serial_ports
 import ui_context as ctx
 
 def setup_ui(root, connect_serial, disconnect_serial):
+    """
+    Initializes and configures the UI components for the application.
+
+    Args:
+        root (tk.Tk): The root Tkinter window.
+        connect_serial (function): Function to connect to the serial port.
+        disconnect_serial (function): Function to disconnect from the serial port.
+
+    Returns:
+        tuple: The x column entry widget and y columns entry widget.
+    """
     global x_coords, y_coords, lines, ax, fig, canvas
 
     ctx.graph_window = None
-    default_baudrate = 19200
     x_coords = []
     y_coords = []
     lines = []
@@ -24,13 +45,17 @@ def setup_ui(root, connect_serial, disconnect_serial):
     permanent_command_entries.clear()
 
     config = read_config()
+    default_baudrate = config.get("baudrate", 19200)
 
     frame = tk.Frame(root)
     frame.pack(padx=10, pady=10)
 
     ports = find_serial_ports()
     ctx.port_selector = ttk.Combobox(frame, values=ports)
-    ctx.port_selector.set("Select Port")
+    if(ports):
+        ctx.port_selector.set(ports[0])
+    else:
+        ctx.port_selector.set("No ports available")
     ctx.port_selector.pack(side=tk.LEFT, padx=5)
 
     baudrate_label = tk.Label(frame, text="Baud Rate:")

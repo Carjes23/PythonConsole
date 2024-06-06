@@ -1,1 +1,1 @@
-{"permanent_command_1": "hello 1 @", "permanent_command_2": "bye 1 @", "permanent_command_3": "hello 0 @", "permanent_command_4": "hello 3 @", "permanent_command_5": "bye 2 @", "x_column": 0, "y_columns": [3]}
+{"permanent_command_1": "hello 1 @", "permanent_command_2": "bye 1 @", "permanent_command_3": "hello 0 @", "permanent_command_4": "hello 3 @", "permanent_command_5": "bye 2 @", "x_column": 0, "y_columns": [3], "baudrate": 19200}
