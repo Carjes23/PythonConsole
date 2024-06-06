@@ -65,8 +65,15 @@ def toggle_graph():
 def update_plot_config_ui():
     x_column = ctx.x_column_entry.get()
     y_columns = ctx.y_columns_entry.get().split(',')
-    plot_config["x_column"] = int(x_column) if x_column else None
-    plot_config["y_columns"] = [int(col) for col in y_columns if col]
+    
+    # Update the x_column in plot_config
+    if x_column.strip().lower() == 'none' or not x_column.strip():
+        plot_config["x_column"] = None
+    else:
+        plot_config["x_column"] = int(x_column)
+    
+    # Update the y_columns in plot_config
+    plot_config["y_columns"] = [int(col) for col in y_columns if col.strip() and col.strip().lower() != 'none']
     
     if ctx.graph_window and ctx.graph_window.winfo_exists():
         close_plot_window(ctx.graph_window, ctx.canvas)
@@ -75,6 +82,8 @@ def update_plot_config_ui():
     
     reset_data()  # Reset data before updating plot
     update_plot_config()  # Update plot configuration
+
+
 
 def update_plot(root):
     if root.winfo_exists():

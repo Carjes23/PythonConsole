@@ -3,6 +3,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import tkinter as tk
 from handler_config import plot_config
 import ui_context as ctx
+import re
 
 def create_plot_window(x_coords, y_coords):
     fig, ax = plt.subplots()
@@ -70,16 +71,22 @@ def parse_data(data):
     x_column = plot_config.get("x_column")
     y_columns = plot_config.get("y_columns", [])
 
+    def extract_number(part):
+        match = re.search(r'[-+]?\d*\.?\d+', part)
+        return float(match.group()) if match else None
+
     if not parts:
         return None, []
 
     x = None
     if x_column is not None and 0 <= x_column < len(parts):
-        x = float(parts[x_column])
+        x = extract_number(parts[x_column])
 
     y_values = []
     for col in y_columns:
         if 0 <= col < len(parts):
-            y_values.append(float(parts[col]))
+            number = extract_number(parts[col])
+            if number is not None:
+                y_values.append(number)
 
     return x, y_values
