@@ -170,3 +170,55 @@ def update_plot(root):
             except Exception as e:
                 print(f"Unexpected error: {e}")
         root.after(100, lambda: update_plot(root))
+        
+def text_button_action():
+    """
+    Handles the text button action. Toggles the text display in the data display.
+    """
+    if ctx.text_button.config('text')[-1] == 'Open Text':
+        ctx.text_window = tk.Toplevel()
+        ctx.text_window.title("Text Window")
+
+        # Create the entry widget for multiline input
+        ctx.text_entry = tk.Text(ctx.text_window, height=10, width=40)
+        ctx.text_entry.pack(pady=5)
+        
+        if "final_text" in ctx.global_config:
+            if ctx.global_config["final_text"]:
+                ctx.text_entry.insert("1.0", ctx.global_config["final_text"])  # Use "1.0" as the starting index
+
+        # Create the checkbutton to decide whether to clear the text after sending
+        ctx.clear_text_var = tk.BooleanVar(value=False)
+        ctx.clear_text_checkbutton = tk.Checkbutton(ctx.text_window, text="Clear text after sending", variable=ctx.clear_text_var)
+        ctx.clear_text_checkbutton.pack(pady=5)
+
+        # Create the send button
+        ctx.send_button = tk.Button(ctx.text_window, text="Send", command=send_text_command)
+        ctx.send_button.pack(pady=5)
+        
+        ctx.text_window.protocol("WM_DELETE_WINDOW", close_text_window)
+
+        ctx.text_button.config(text='Close Text')
+    else:
+        close_text_window()
+
+            
+def send_text_command():
+    """
+    Sends the text from the multiline entry widget to the USART.
+    """
+    text = ctx.text_entry.get("1.0", tk.END).strip()  # Get all text from the Text widget
+    command = text.replace("\n", "\n, ")  # Format the text with newlines and commas
+
+    send_command(command)  # Send the command via USART
+    display_user_command(command)
+
+    if ctx.clear_text_var.get():
+        ctx.text_entry.delete("1.0", tk.END)  # Clear the text if the checkbox is checked
+        
+def close_text_window():
+    if ctx.text_window is not None:
+        ctx.final_text = ctx.text_entry.get("1.0", tk.END).strip()
+        ctx.global_config["final_text"] = ctx.final_text
+        ctx.text_window.destroy()
+        ctx.text_button.config(text='Open Text')

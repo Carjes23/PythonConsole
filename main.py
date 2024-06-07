@@ -58,6 +58,8 @@ def main():
         
         # Save baud rate
         config["baudrate"] = int(ctx.baudrate_entry.get())
+        
+        config["final_text"] = ctx.final_text
 
         write_config(config)
 

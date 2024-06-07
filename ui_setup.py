@@ -17,7 +17,8 @@ from ui_handlers import (
     reset_data, 
     toggle_graph, 
     update_plot_config_ui, 
-    send_permanent_command_ui
+    send_permanent_command_ui,
+    text_button_action
 )
 from handler_config import permanent_command_entries, read_config, plot_config
 from serial_handler import find_serial_ports
@@ -45,6 +46,7 @@ def setup_ui(root, connect_serial, disconnect_serial):
     permanent_command_entries.clear()
 
     config = read_config()
+    ctx.global_config = config
     default_baudrate = config.get("baudrate", 19200)
 
     frame = tk.Frame(root)
@@ -82,9 +84,15 @@ def setup_ui(root, connect_serial, disconnect_serial):
 
     data_frame = tk.Frame(root)
     data_frame.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
+    
+    button_frame = tk.Frame(data_frame)
+    button_frame.pack(side=tk.LEFT, padx=5)
 
-    ctx.graph_button = tk.Button(data_frame, text="Show Graph", command=toggle_graph)
-    ctx.graph_button.pack(side=tk.LEFT, padx=5)
+    ctx.graph_button = tk.Button(button_frame, text="Show Graph", command=toggle_graph)
+    ctx.graph_button.pack(side=tk.TOP, pady=5)
+    
+    ctx.text_button = tk.Button(button_frame, text="Open Text", command=text_button_action)
+    ctx.text_button.pack(side=tk.TOP, pady=5)
 
     ctx.data_display = scrolledtext.ScrolledText(data_frame, width=80, height=20)
     ctx.data_display.pack(side=tk.LEFT, padx=5, fill=tk.BOTH, expand=True)
